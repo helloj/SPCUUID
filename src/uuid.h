@@ -85,5 +85,6 @@ int	uuidlib_v5		(uuid__t *const,const uuid__t *const,const void *const,const siz
 int	uuidlib_cmp		(const uuid__t *const restrict,const uuid__t *const restrict)        __attribute__((nonnull,nothrow));
 int	uuidlib_parse		(uuid__t *const,const char *)                                        __attribute__((nonnull,nothrow));
 int	uuidlib_toa		(const uuid__t *const,char *dest,size_t)                             __attribute__((nonnull,nothrow));
+int	uuidlib_hex		(const uuid__t *const,char *dest,size_t)                             __attribute__((nonnull,nothrow));
 
 #endif

@@ -52,6 +52,7 @@ static int	uuidlua_meta___le	(lua_State *const);
 static int	uuidlua_meta___lt	(lua_State *const);
 static int	uuidlua_meta___len	(lua_State *const);
 static int	uuidlua_meta___call	(lua_State *const);
+static int	uuidlua_hex		(lua_State *const);
 static int	uuidlua_parse		(lua_State *const);
 static int	uuidlua_breakout	(lua_State *const);
 
@@ -59,6 +60,7 @@ static int	uuidlua_breakout	(lua_State *const);
 
 static const struct luaL_Reg muuid_reg[] =
 {
+  { "hex"	, uuidlua_hex		} ,
   { "parse"	, uuidlua_parse		} ,
   { "breakout"	, uuidlua_breakout	} ,
   { NULL	, NULL			}
@@ -260,6 +262,20 @@ static int uuidlua_meta___call(lua_State *const L)
   
   luaL_getmetatable(L,TYPE_UUID);
   lua_setmetatable(L,-2);
+  return 1;
+}
+
+/************************************************************************/
+
+static int uuidlua_hex(lua_State *const L)
+{
+  uuid__t *uuid;
+  char     buffer[33];
+
+  uuid  = luaL_checkudata(L,1,TYPE_UUID);
+
+  uuidlib_hex(uuid,buffer,sizeof(buffer));
+  lua_pushlstring(L,buffer,32);
   return 1;
 }
 
