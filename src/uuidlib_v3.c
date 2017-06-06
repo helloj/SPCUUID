@@ -21,8 +21,8 @@
 
 #include <string.h>
 #include <assert.h>
-#include <openssl/evp.h>
 
+#include "md5.h"
 #include "uuid.h"
 
 /*************************************************************************/
@@ -34,9 +34,8 @@ int uuidlib_v3(
 	const size_t         len
 )
 {
-  const EVP_MD *m = EVP_md5();
-  EVP_MD_CTX    ctx;
-  unsigned char hash[EVP_MAX_MD_SIZE];
+  MD5_CTX       ctx;
+  unsigned char hash[MD5_SIZE];
   unsigned int  hashsize;
   
   assert(uuid      != NULL);
@@ -44,11 +43,11 @@ int uuidlib_v3(
   assert(name      != NULL);
   assert(len       >  0);
   
-  EVP_DigestInit(&ctx,m);
-  EVP_DigestUpdate(&ctx,namespace->flat,sizeof(struct uuid));
-  EVP_DigestUpdate(&ctx,name,len);
-  EVP_DigestFinal(&ctx,hash,&hashsize);
-  
+  MD5_Init(&ctx);
+  MD5_Update(&ctx, namespace->flat, sizeof(struct uuid));
+  MD5_Update(&ctx, name, len);
+  MD5_Final(hash, &ctx);
+
   memcpy(uuid->flat,hash,sizeof(struct uuid));
   uuid->flat[6] = (uuid->flat[6] & 0x0F) | 0x30;
   uuid->flat[8] = (uuid->flat[8] & 0x3F) | 0x80;

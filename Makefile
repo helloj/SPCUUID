@@ -27,7 +27,7 @@ ifeq ($(UNAME),Linux)
   CC      = gcc -std=c99
   CFLAGS  = -g -Wall -Wextra -pedantic
   LDFLAGS = -shared
-  LDLIBS  = -lrt -lcrypto
+  LDLIBS  = -lrt
   SHARED  = -fPIC
 endif
 
@@ -35,7 +35,7 @@ ifeq ($(UNAME),SunOS)
   CC      = cc -xc99
   CFLAGS  = -g
   LDFLAGS = 
-  LDLIBS  = -lrt -lsocket -lnsl -lcrypto
+  LDLIBS  = -lrt -lsocket -lnsl
   SHARED  = -G
 endif
 
@@ -99,7 +99,9 @@ lib/libspcuuid.a : obj/uuid_ns_dns.o	\
 		obj/uuidlib_v2.o	\
 		obj/uuidlib_v3.o	\
 		obj/uuidlib_v4.o	\
-		obj/uuidlib_v5.o
+		obj/uuidlib_v5.o	\
+		obj/md5.o		\
+		obj/sha1.o
 	$(AR) rscu $@ $?
 
 lib/lua-uuid.so : so/luauuid.o		\
@@ -115,7 +117,9 @@ lib/lua-uuid.so : so/luauuid.o		\
 		so/uuidlib_v2.o		\
 		so/uuidlib_v3.o		\
 		so/uuidlib_v4.o		\
-		so/uuidlib_v5.o
+		so/uuidlib_v5.o 	\
+		so/md5.o		\
+		so/sha1.o
 	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 # ===========================================================
@@ -133,6 +137,8 @@ obj/uuidlib_v2.o    : src/uuidlib_v2.c    src/uuid.h
 obj/uuidlib_v3.o    : src/uuidlib_v3.c    src/uuid.h
 obj/uuidlib_v4.o    : src/uuidlib_v4.c    src/uuid.h
 obj/uuidlib_v5.o    : src/uuidlib_v5.c    src/uuid.h
+obj/md5.o           : src/md5.c           src/md5.h
+obj/sha1.o          : src/sha1.c          src/sha1.h
 
 # ===================================================
 
@@ -150,6 +156,8 @@ so/uuidlib_v2.o    : src/uuidlib_v2.c    src/uuid.h
 so/uuidlib_v3.o    : src/uuidlib_v3.c    src/uuid.h
 so/uuidlib_v4.o    : src/uuidlib_v4.c    src/uuid.h
 so/uuidlib_v5.o    : src/uuidlib_v5.c    src/uuid.h
+so/md5.o           : src/md5.c           src/md5.h
+so/sha1.o          : src/sha1.c          src/sha1.h
 
 # ===================================================
 
